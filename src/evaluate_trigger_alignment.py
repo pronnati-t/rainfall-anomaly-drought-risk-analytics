@@ -45,7 +45,7 @@ output_columns = [
 
 results = df[output_columns].copy()
 
-results_file = OUTPUT_DIR / "basis_risk_evaluation.csv"
+results_file = OUTPUT_DIR / "trigger_alignment_evaluation.csv"
 results.to_csv(results_file, index=False)
 
 print("RAINFALL DEFICIT VS INSURANCE PAYOUT")

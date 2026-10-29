@@ -11,10 +11,11 @@ The goal is to explore how rainfall-based indices can be used to model weather r
 - Identify rainfall-deficit years using an illustrative threshold.
 - Simulate hypothetical parametric insurance payouts under configurable trigger assumptions.
 - Compare payout frequency, average annual payout, cumulative simulated payouts, and maximum annual payout across alternative trigger designs.
-- Evaluate insurance contract behaviour using chronological out-of-sample testing and rolling-origin backtesting.
-- Examine the sensitivity of simulated payouts to different rainfall trigger thresholds.
+- Evaluate contract behaviour using chronological out-of-sample testing and rolling-origin backtesting.
+- Examine sensitivity to different rainfall trigger thresholds.
 - Analyze within-season rainfall distribution and consecutive dry spells.
 - Compare seasonal-rainfall and dry-spell insurance payout mechanisms.
+- Examine the alignment between rainfall-deficit triggers and simulated payouts.
 
 ## Dataset
 
@@ -53,7 +54,7 @@ This is an illustrative screening rule, not an official drought classification.
 
 The hypothetical seasonal-rainfall insurance model uses the following assumptions:
 
-- **Reference rainfall:** Mean annual monsoon rainfall across the study period, or a reference calculated from prior years in the rolling-origin evaluation.
+- **Reference rainfall:** Mean annual monsoon rainfall across the study period, or a reference calculated from preceding years in the rolling-origin evaluation.
 - **Payout trigger:** A selected percentage of reference rainfall.
 - **Full-payout threshold:** 50% of the applicable reference rainfall.
 - **Maximum payout:** ₹10,000 per hypothetical policy.
@@ -77,7 +78,7 @@ A separate rolling-origin sensitivity analysis evaluates trigger ratios from 70%
 
 ### 5. Out-of-Sample Validation
 
-Two backtesting approaches are used to examine how the hypothetical contract behaves when evaluated on rainfall observations not used to calculate its reference.
+Two backtesting approaches examine how the hypothetical contract behaves when evaluated on rainfall observations not used to calculate its reference.
 
 **Chronological holdout**
 
@@ -92,7 +93,7 @@ Two backtesting approaches are used to examine how the hypothetical contract beh
 - The reference is recalculated as additional historical observations become available.
 - Each test year's reference uses only observations from preceding years.
 
-The rolling-origin approach better represents a setting in which a contract benchmark is updated using historical information available before each season.
+The rolling-origin approach represents a setting in which a contract benchmark is updated using historical information available before each season.
 
 ### 6. Fixed-Reference Versus Rolling-Reference Comparison
 
@@ -140,6 +141,21 @@ The simulated payout equals the resulting fraction multiplied by ₹10,000.
 Under this implementation, a maximum dry spell of exactly 14 days produces no positive payout. The payout increases for longer spells and reaches the maximum at 30 days.
 
 The dry-spell contract is an experimental comparison, not a calibrated or commercially priced insurance product.
+
+### 9. Rainfall-Trigger Alignment Diagnostic
+
+The `evaluate_trigger_alignment.py` script compares rainfall-deficit indicators with simulated seasonal-rainfall insurance payouts in the rolling-origin backtest.
+
+It classifies each test year into one of four categories:
+
+- Deficit and payout.
+- Deficit without payout.
+- Payout without deficit.
+- Neither.
+
+In the current implementation, both the rainfall-deficit indicator and the payout indicator use the same rainfall trigger. Consequently, their agreement is largely determined by the contract's construction.
+
+This is a **trigger-alignment diagnostic, not an agricultural basis-risk evaluation**. The project does not compare simulated payouts with actual crop losses or yields. It therefore cannot establish whether the contract would compensate farmers adequately for agricultural losses.
 
 ## Results
 
@@ -276,7 +292,7 @@ The outputs directory also contains CSV files with annual results, summary metri
 ## Repository Structure
 
 ```text
-rainfall-risk-analytics/
+rainfall-anomaly-drought-risk-analytics/
 ├── data/
 │   ├── boundaries/
 │   │   └── india_states.geojson
@@ -309,7 +325,7 @@ rainfall-risk-analytics/
 │   ├── backtest_rolling_origin.py
 │   ├── compare_backtest_methods.py
 │   ├── sensitivity_rolling_origin.py
-│   ├── evaluate_basis_risk.py
+│   ├── evaluate_trigger_alignment.py
 │   ├── analyze_dry_spells.py
 │   ├── visualize_dry_spells.py
 │   ├── compare_dry_spells_with_payouts.py
@@ -319,7 +335,7 @@ rainfall-risk-analytics/
 └── README.md
 ```
 
-The structure above documents the main scripts and representative outputs. Exact file availability may vary as the project evolves. Raw rainfall data, processed datasets, virtual environments, and local backup scripts are not intended to be committed to Git.
+The tree documents the main scripts and representative outputs. Exact file availability may vary as the project evolves. Raw rainfall data, processed datasets, virtual environments, and local backup scripts are not intended to be committed to Git.
 
 ## Reproducibility
 
@@ -346,6 +362,7 @@ python src/analyze_dry_spells.py
 python src/visualize_dry_spells.py
 python src/compare_dry_spells_with_payouts.py
 python src/backtest_dry_spell_insurance.py
+python src/evaluate_trigger_alignment.py
 ```
 
 Some scripts depend on outputs generated by earlier steps. Run the relevant upstream analyses first if their expected CSV files are missing.
@@ -353,6 +370,8 @@ Some scripts depend on outputs generated by earlier steps. Run the relevant upst
 The rolling-origin sensitivity script writes annual results to `outputs/sensitivity_rolling_origin_by_year.csv` and summary metrics to `outputs/sensitivity_rolling_origin_summary.csv`.
 
 The dry-spell analysis generates processed metrics under `data/processed/`, while its visualizations and insurance backtest tables are written to `outputs/`.
+
+The trigger-alignment diagnostic reads `outputs/rolling_origin_backtest.csv` and writes `outputs/trigger_alignment_evaluation.csv`.
 
 ## Limitations
 
@@ -363,6 +382,7 @@ The dry-spell analysis generates processed metrics under `data/processed/`, whil
 - The rainfall-deficit threshold, dry-day threshold, and insurance contract parameters are illustrative.
 - Rainfall deficits and dry spells are not official drought classifications or direct measurements of agricultural damage.
 - Crop-yield, crop-loss, soil-moisture, irrigation, and insured-value observations are not incorporated.
+- The trigger-alignment diagnostic compares rainfall indicators with payouts derived from the same rainfall trigger. It does not measure actual agricultural basis risk.
 - The project does not establish whether simulated payouts align with actual agricultural losses.
 - The project does not estimate commercially viable premiums or validate insurer profitability.
 - Adding payouts from the two experimental contracts can count overlapping weather risks more than once.
