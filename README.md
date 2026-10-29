@@ -149,3 +149,37 @@ rainfall-risk-analytics/
 ## Disclaimer
 
 This project is an educational quantitative risk-modelling exercise. Simulated payouts are hypothetical and must not be interpreted as actual insurance claims, official drought assessments, actuarially validated prices, or evidence of commercial profitability.
+
+## Out-of-Sample Validation
+
+To evaluate contract behaviour on unseen rainfall observations, the project implements chronological out-of-sample testing and rolling-origin backtesting.
+
+### Validation design
+
+- **Chronological holdout:** Calibrates the rainfall reference on 2010–2019 and evaluates the contract on 2020–2025.
+- **Trigger sensitivity:** Compares multiple trigger ratios while keeping the training-period reference and exhaustion threshold fixed.
+- **Rolling-origin backtest:** Uses at least five preceding years to calibrate the reference for each subsequent test year, evaluating 2015–2025.
+- **Method comparison:** Compares a fixed reference calibrated on 2010–2014 with a rolling reference recalculated using only prior years, evaluated on the same 2015–2025 test period.
+
+### Results
+
+| Metric | Fixed reference | Rolling reference |
+|---|---:|---:|
+| Test years | 11 | 11 |
+| Years with payout | 3 | 3 |
+| Payout frequency | 27.27% | 27.27% |
+| Average annual payout | ₹1,317.69 | ₹1,066.24 |
+| Total simulated payouts | ₹14,494.56 | ₹11,728.64 |
+| Maximum annual payout | ₹7,504.75 | ₹5,839.45 |
+
+The rolling-origin backtest using an 80% trigger and 50% exhaustion threshold produced payouts in 3 of 11 test years, with an average simulated payout of ₹1,066.24 per year.
+
+The fixed-reference method generated approximately 23.6% more total simulated payouts than the rolling-reference method over the same test period. This reflects differences in contract thresholds, not evidence that either method is more profitable or provides better protection.
+
+### Limitations
+
+- The analysis contains only 16 annual rainfall observations, with 11 observations in the rolling-origin evaluation.
+- Simulated payouts are illustrative and are not actual insurance claims, premiums, or actuarial pricing estimates.
+- Crop-loss data are not incorporated, so the analysis does not measure basis risk or establish whether payouts correspond to agricultural losses.
+- The results do not establish a long-term climate trend or reliable future payout probabilities.
+- The fixed and rolling approaches represent different benchmark designs and should be evaluated against crop losses, affordability, and insurer costs before making product recommendations.
