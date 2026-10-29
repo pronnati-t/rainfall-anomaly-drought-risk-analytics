@@ -1,0 +1,6 @@
+trigger_ratio,trigger_mm,years_with_payout,trigger_frequency_pct,average_annual_payout_inr,total_historical_payout_inr,maximum_annual_payout_inr
+0.7,583.69,1,6.25,260.42,4166.67,4166.67
+0.75,625.38,3,18.75,419.32,6709.11,5333.34
+0.8,667.07,5,31.25,827.67,13242.65,6111.11
+0.85,708.76,5,31.25,1155.86,18493.7,6666.67
+0.9,750.46,6,37.5,1457.9,23326.43,7083.33
