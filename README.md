@@ -1,14 +1,14 @@
 # Rainfall Risk Analytics & Parametric Insurance Backtesting
 
-A Python-based climate-risk analytics project that analyzes historical rainfall variability and backtests hypothetical rainfall-indexed insurance payouts using daily gridded rainfall data from the India Meteorological Department (IMD).
+A Python-based climate-risk analytics project that analyzes historical monsoon rainfall across Gujarat using daily gridded rainfall data from the India Meteorological Department (IMD). The project builds a hypothetical rainfall-indexed insurance payout model and evaluates alternative trigger designs through historical backtesting and sensitivity analysis.
 
 ## Project Objectives
 
-- Analyze June–September monsoon rainfall across a geographic region approximating Gujarat.
-- Calculate rainfall anomalies against the 2010–2025 study-period mean.
-- Identify rainfall-deficit years using an illustrative threshold.
-- Simulate hypothetical parametric insurance payouts based on rainfall triggers.
-- Compare payout frequency and historical payout amounts under alternative trigger designs.
+- Analyze June–September monsoon rainfall across Gujarat using a state-boundary mask.
+- Quantify annual rainfall anomalies relative to the 2010–2025 study-period mean.
+- Screen for rainfall-deficit years using an illustrative threshold.
+- Simulate hypothetical parametric insurance payouts under configurable trigger assumptions.
+- Compare payout frequency, average annual payout, cumulative simulated payouts, and maximum annual payout across alternative trigger designs.
 
 ## Dataset
 
@@ -17,53 +17,83 @@ A Python-based climate-risk analytics project that analyzes historical rainfall 
 - **Period analyzed:** 2010–2025
 - **Variable:** Daily rainfall, in millimetres
 - **Season:** June–September
+- **Geographic boundary:** Gujarat state boundary from the geoBoundaries India ADM1 dataset
 
-The analysis initially uses a geographic bounding box as an approximation of Gujarat. It is not an exact state-boundary mask, so results should be interpreted as exploratory regional indicators.
+The analysis selects rainfall grid-cell centres that fall within the Gujarat polygon. It averages rainfall across the selected cells for each day and aggregates the daily regional mean over June–September.
+
+This is a grid-cell-centre mask, not a fractional-area-weighted calculation. Boundary cells may be only partly inside Gujarat, and the analysis does not yet apply area weighting.
 
 ## Methodology
 
 ### 1. Rainfall analysis
 
-Daily rainfall is averaged across available grid cells within the selected region. June–September values are aggregated for each year, and anomalies are calculated relative to the mean across the 16-year study period.
+For each year, daily rainfall is averaged across the selected Gujarat grid cells. Daily regional means are summed over June–September to produce an annual monsoon rainfall indicator.
+
+Anomalies are calculated relative to the mean of the 16-year study period:
+
+`anomaly = annual monsoon rainfall - study-period mean`
+
+Percentage anomalies express this difference as a percentage of the study-period mean.
 
 ### 2. Rainfall-deficit screening
 
-Years with monsoon rainfall below 80% of the study-period mean are flagged for exploratory analysis. This is an illustrative threshold, not an official drought classification.
+Years with monsoon rainfall below 80% of the study-period mean are flagged for exploratory analysis. This is an illustrative screening rule, not an official drought classification.
 
 ### 3. Parametric insurance simulation
 
-A hypothetical policy uses the following assumptions:
+The hypothetical policy uses the following assumptions:
 
-- Reference rainfall: study-period mean
-- Payout trigger: selected percentage of reference rainfall
-- Maximum-payout threshold: 50% of reference rainfall
-- Maximum payout: ₹10,000 per policy
-- Payout structure: linear between the trigger and maximum-payout threshold
+- **Reference rainfall:** Mean annual monsoon rainfall across the study period
+- **Payout trigger:** Selected percentage of reference rainfall
+- **Full-payout threshold:** 50% of reference rainfall
+- **Maximum payout:** ₹10,000 per policy
+- **Payout structure:** Linear between the trigger and full-payout threshold
 
-The payout fraction is calculated as:
+The payout fraction is:
 
-`clip((trigger - observed rainfall) / (trigger - exhaustion threshold), 0, 1)`
+`clip((trigger - observed rainfall) / (trigger - full-payout threshold), 0, 1)`
 
 The simulated payout is the payout fraction multiplied by the maximum payout.
 
+These parameters are illustrative and are not calibrated to actual insurance contracts, crop losses, premiums, or claims.
+
 ### 4. Trigger sensitivity analysis
 
-The model compares trigger levels of 70%, 75%, 80%, 85%, and 90% of reference rainfall, measuring historical payout frequency, average annual payout, total simulated payouts, and maximum annual payout.
+The model compares trigger levels of 70%, 75%, 80%, 85%, and 90% of reference rainfall while holding the full-payout threshold at 50% and the maximum payout at ₹10,000.
 
-## Preliminary Findings
+For each design, it reports historical payout frequency, average annual payout, total simulated payouts, and maximum annual payout.
 
-Using the current regional approximation and illustrative policy assumptions:
+## Results
 
-- Study-period mean monsoon rainfall: **833.84 mm**
-- Years flagged below 80% of the mean: **2012, 2014, 2015, 2016, and 2018**
-- Driest monsoon in the study period: **2018**, at 514.20 mm
-- Wettest monsoon in the study period: **2024**, at 1,070.23 mm
+### Rainfall analysis
 
-Under the current payout formula, the 80% trigger design produces payouts in 5 of 16 historical years. The sensitivity analysis shows that higher triggers generally increase historical payout frequency and average payout amounts.
+Based on the current Gujarat grid-cell-centre mask and 2010–2025 study period:
+
+- **Mean monsoon rainfall:** 827.33 mm
+- **Rainfall-deficit years:** 2012, 2014, 2015, 2016, and 2018
+- **Driest year:** 2018, with 484.79 mm
+- **Wettest year:** 2020, with 1,085.09 mm
+- **Grid cells with valid rainfall on the first day:** 258
+
+The rainfall-deficit flags use the illustrative 80%-of-mean threshold and should not be interpreted as official drought declarations.
+
+### Insurance sensitivity analysis
+
+Under the illustrative payout model:
+
+| Trigger | Years with payout | Average annual payout | Total simulated payouts | Maximum annual payout |
+|---:|---:|---:|---:|---:|
+| 70% | 3/16 (18.75%) | ₹471.55 | ₹7,544.80 | ₹5,701.37 |
+| 75% | 5/16 (31.25%) | ₹805.24 | ₹12,883.81 | ₹6,561.09 |
+| 80% | 5/16 (31.25%) | ₹1,191.86 | ₹19,069.84 | ₹7,134.24 |
+| 85% | 6/16 (37.50%) | ₹1,482.12 | ₹23,713.90 | ₹7,543.64 |
+| 90% | 6/16 (37.50%) | ₹1,765.60 | ₹28,249.66 | ₹7,850.68 |
+
+Higher triggers generally increase historical payout frequency and simulated payouts. These are historical model outputs, not forecasts or measures of insurer profitability.
 
 ## Visualizations
 
-The `outputs/` directory contains charts for:
+The `outputs/` directory contains visualizations of:
 
 - Historical monsoon rainfall
 - Rainfall anomalies
@@ -74,20 +104,22 @@ The `outputs/` directory contains charts for:
 
 ## Tech Stack
 
-Python, Pandas, NumPy, Matplotlib, xarray, netCDF4, Git, and GitHub.
+Python, Pandas, NumPy, Matplotlib, xarray, netCDF4, GeoPandas, Shapely, PyProj, Git, and GitHub.
 
 ## Repository Structure
 
 ```text
 rainfall-risk-analytics/
 ├── data/
-│   ├── raw/          # Original data, excluded from Git
-│   └── processed/    # Processed tables, excluded from Git
+│   ├── boundaries/   # Gujarat state-boundary dataset
+│   ├── raw/          # Original IMD files; excluded from Git
+│   └── processed/    # Derived tables; excluded from Git
 ├── outputs/          # Charts and backtest summaries
 ├── src/
 │   ├── inspect_data.py
 │   ├── check_rainfall.py
 │   ├── analyze_rainfall.py
+│   ├── test_gujarat_boundary.py
 │   ├── visualize_results.py
 │   ├── backtest_insurance.py
 │   ├── trigger_sensitivity.py
@@ -98,20 +130,22 @@ rainfall-risk-analytics/
 
 ## Limitations
 
-- The study covers only 16 years, so estimates of payout frequency are uncertain.
-- The geographic bounding box approximates Gujarat and may include grid cells outside the state.
-- The policy parameters are illustrative and have not been calibrated against crop losses, claims, or insured values.
+- The analysis covers only 16 years, so historical payout frequencies are uncertain.
+- Grid-cell centres are used to define the geographic mask; partial cell coverage and area weighting are not handled.
+- The reference rainfall and trigger assumptions are evaluated on the same study period, so the results are exploratory rather than an out-of-sample assessment.
+- The policy parameters are not calibrated against crop losses, claims, insured values, or actual contract terms.
+- Rainfall deficits do not necessarily correspond to agricultural losses or official drought classifications.
 - The analysis does not estimate a commercially viable premium or validate insurer profitability.
-- Historical rainfall deficits do not necessarily imply agricultural losses or official drought declarations.
 
 ## Future Improvements
 
-- Replace the geographic bounding box with a state-boundary mask.
-- Evaluate data quality and spatial weighting.
+- Add area-weighted rainfall aggregation and quantify sensitivity to the spatial mask.
+- Compare alternative reference periods and evaluate trigger designs on held-out years.
 - Analyze dry spells and within-season rainfall distribution.
-- Compare trigger designs against observed agricultural impacts, where reliable data are available.
-- Extend the historical period and perform additional robustness checks.
+- Compare rainfall triggers against observed agricultural impacts and quantify basis risk where reliable data are available.
+- Extend the historical period where consistent data are available.
+- Add automated data-quality checks and reproducible evaluation tests.
 
 ## Disclaimer
 
-This project is an educational quantitative risk modelling exercise. The simulated payouts are hypothetical and should not be interpreted as actual insurance claims, official drought assessments, or actuarially validated prices.
+This project is an educational quantitative risk-modelling exercise. Simulated payouts are hypothetical and must not be interpreted as actual insurance claims, official drought assessments, actuarially validated prices, or evidence of commercial profitability.
