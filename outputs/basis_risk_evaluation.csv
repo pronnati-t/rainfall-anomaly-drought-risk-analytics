@@ -1,0 +1,12 @@
+test_year,training_reference_mm,trigger_mm,test_rainfall_mm,rainfall_deficit,payout_triggered,simulated_payout_inr,classification
+2015,843.33,674.66,606.18,True,True,2706.69,Deficit and payout
+2016,803.8,643.04,566.3,True,True,3182.5,Deficit and payout
+2017,769.88,615.9,818.06,False,False,0.0,Neither
+2018,775.9,620.72,484.79,True,True,5839.45,Deficit and payout
+2019,743.55,594.84,1000.4,False,False,0.0,Neither
+2020,769.24,615.39,1085.09,False,False,0.0,Neither
+2021,797.95,638.36,696.7,False,False,0.0,Neither
+2022,789.51,631.61,920.99,False,False,0.0,Neither
+2023,799.63,639.7,842.35,False,False,0.0,Neither
+2024,802.68,642.14,1083.36,False,False,0.0,Neither
+2025,821.39,657.11,916.44,False,False,0.0,Neither
