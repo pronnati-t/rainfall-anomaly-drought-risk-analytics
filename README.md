@@ -183,3 +183,33 @@ The fixed-reference method generated approximately 23.6% more total simulated pa
 - Crop-loss data are not incorporated, so the analysis does not measure basis risk or establish whether payouts correspond to agricultural losses.
 - The results do not establish a long-term climate trend or reliable future payout probabilities.
 - The fixed and rolling approaches represent different benchmark designs and should be evaluated against crop losses, affordability, and insurer costs before making product recommendations.
+
+## Rolling-Origin Trigger Sensitivity
+
+The project evaluates seven trigger ratios (70%–100%) using rolling-origin backtesting. Each test year is evaluated against a rainfall reference calculated exclusively from preceding years. The exhaustion threshold remains fixed at 50% of the reference, and the maximum illustrative payout is ₹10,000.
+
+### Results
+
+| Trigger ratio | Payout years | Payout frequency | Average annual payout | Total simulated payouts |
+|---:|---:|---:|---:|---:|
+| 70% | 1/11 | 9.09% | ₹341.74 | ₹3,759.18 |
+| 75% | 3/11 | 27.27% | ₹734.03 | ₹8,074.37 |
+| 80% | 3/11 | 27.27% | ₹1,066.24 | ₹11,728.64 |
+| 85% | 3/11 | 27.27% | ₹1,303.53 | ₹14,338.84 |
+| 90% | 4/11 | 36.36% | ₹1,542.60 | ₹16,968.61 |
+| 95% | 4/11 | 36.36% | ₹1,775.24 | ₹19,527.66 |
+| 100% | 4/11 | 36.36% | ₹1,961.35 | ₹21,574.89 |
+
+### Interpretation
+
+Increasing the trigger ratio increases simulated payouts and can increase payout frequency. Between 80% and 85%, the number of payout years remains three, but the average and maximum annual payouts rise. At 90%, four of the eleven test years trigger payouts.
+
+These results illustrate the trade-off between payout frequency and simulated payout amounts. They do not establish an optimal insurance contract because premiums, insurer expenses, and actual crop-loss observations are not included.
+
+### Reproducibility
+
+Run the rolling-origin sensitivity analysis with:
+
+`python src/sensitivity_rolling_origin.py`
+
+The script writes detailed annual results to `outputs/sensitivity_rolling_origin_by_year.csv` and summary metrics to `outputs/sensitivity_rolling_origin_summary.csv`.
