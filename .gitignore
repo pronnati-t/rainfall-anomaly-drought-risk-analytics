@@ -1,0 +1,15 @@
+
+.venv/
+__pycache__/
+*.py[cod]
+.DS_Store
+.env
+
+# Keep raw datasets out of Git
+data/raw/*
+data/processed/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+
+# Notebook checkpoints
+.ipynb_checkpoints/
