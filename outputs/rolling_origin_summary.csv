@@ -1,0 +1,2 @@
+minimum_training_years,first_test_year,last_test_year,test_observations,payout_years,payout_frequency_pct,average_annual_payout_inr,total_simulated_payout_inr,maximum_annual_payout_inr
+5,2015,2025,11,3,27.27,1066.24,11728.64,5839.45

@@ -1,0 +1,6 @@
+trigger_ratio,training_reference_mm,trigger_mm,exhaustion_mm,test_years,test_years_with_payout,test_trigger_frequency_pct,average_annual_payout_inr,total_test_payout_inr,maximum_annual_payout_inr
+0.7,769.24,538.47,384.62,6,0,0.0,0.0,0.0,0.0
+0.75,769.24,576.93,384.62,6,0,0.0,0.0,0.0,0.0
+0.8,769.24,615.39,384.62,6,0,0.0,0.0,0.0,0.0
+0.85,769.24,653.85,384.62,6,0,0.0,0.0,0.0,0.0
+0.9,769.24,692.31,384.62,6,0,0.0,0.0,0.0,0.0

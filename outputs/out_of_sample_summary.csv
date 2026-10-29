@@ -1,0 +1,2 @@
+train_start,train_end,test_start,test_end,training_reference_rainfall_mm,trigger_ratio,trigger_mm,exhaustion_ratio,exhaustion_mm,max_payout_inr,test_years,payout_years,payout_frequency,average_annual_payout_inr,total_payout_inr,maximum_annual_payout_inr
+2010,2019,2020,2025,769.2375122070313,0.8,615.3900097656251,0.5,384.61875610351564,10000,6,0,0.0,0.0,0.0,0.0
