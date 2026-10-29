@@ -1,0 +1,12 @@
+year,monsoon_rainfall_mm,dry_days,maximum_consecutive_dry_days,spells_at_least_7_days,spells_at_least_14_days,training_reference_mm,trigger_mm,simulated_payout_inr,payout_triggered,dry_spell_payout_fraction,dry_spell_payout_inr,dry_spell_payout_triggered,combined_payout_inr
+2015,606.18,89,25,5,2,843.33,674.66,2706.69,True,0.6875,6875.0,True,9581.69
+2016,566.3,64,21,3,1,803.8,643.04,3182.5,True,0.4375,4375.0,True,7557.5
+2017,818.06,64,11,5,0,769.88,615.9,0.0,False,0.0,0.0,False,0.0
+2018,484.79,79,23,4,3,775.9,620.72,5839.45,True,0.5625,5625.0,True,11464.45
+2019,1000.4,47,12,3,0,743.55,594.84,0.0,False,0.0,0.0,False,0.0
+2020,1085.09,40,10,1,0,769.24,615.39,0.0,False,0.0,0.0,False,0.0
+2021,696.7,62,18,4,1,797.95,638.36,0.0,False,0.25,2500.0,True,2500.0
+2022,920.99,57,13,3,0,789.51,631.61,0.0,False,0.0,0.0,False,0.0
+2023,842.35,65,36,2,1,799.63,639.7,0.0,False,1.0,10000.0,True,10000.0
+2024,1083.36,47,11,3,0,802.68,642.14,0.0,False,0.0,0.0,False,0.0
+2025,916.44,55,14,3,1,821.39,657.11,0.0,False,0.0,0.0,False,0.0

@@ -1,0 +1,2 @@
+test_years,trigger_days,exhaustion_days,maximum_payout_inr,dry_spell_payout_years,dry_spell_payout_frequency_pct,average_dry_spell_payout_inr,total_dry_spell_payout_inr,maximum_dry_spell_payout_inr,combined_total_payout_inr
+11,14,30,10000,5,45.45,2670.45,29375.0,10000.0,41103.64
