@@ -300,6 +300,7 @@ rainfall-risk-analytics/
 │   ├── analyze_rainfall.py
 │   ├── test_gujarat_boundary.py
 │   ├── visualize_results.py
+│   ├── plot_backtest.py
 │   ├── backtest_insurance.py
 │   ├── trigger_sensitivity.py
 │   ├── backtest_out_of_sample.py
